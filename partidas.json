@@ -1,0 +1,180 @@
+[
+  {
+    "id": "1c4bb5a317d5523c3fc026effd701ccb",
+    "fase": "respuestas",
+    "anfitrion_id": "35a0c638e1466d42",
+    "puntos_para_ganar": 2,
+    "jugadores": [
+      {
+        "id": "35a0c638e1466d42",
+        "nombre": "Jimena",
+        "token": "a30d02b46bdb64f9ff015b8c11fc5731accdca7798fdec183e63611d794b699f",
+        "puntos": 0,
+        "mano": [
+          {
+            "id": 29,
+            "texto": "Un gallo pinto con más poder que un diputado."
+          },
+          {
+            "id": 98,
+            "texto": "Un diputado que llega a trabajar en pijama."
+          },
+          {
+            "id": 110,
+            "texto": "Un diputado que se equivoca de partido en plena votación."
+          },
+          {
+            "id": 54,
+            "texto": "Un debate presidencial transmitido por Facebook Live."
+          },
+          {
+            "id": 15,
+            "texto": "Un plan de gobierno hecho en Canva."
+          },
+          {
+            "id": 99,
+            "texto": "Una campaña que reparte gallos pintos en lugar de volantes."
+          },
+          {
+            "id": 47,
+            "texto": "Un audio filtrado al grupo equivocado."
+          }
+        ],
+        "mi_voto": null
+      },
+      {
+        "id": "bf4d64565b8c4b92",
+        "nombre": "A",
+        "token": "031afd82a485ebb9e52e4f1f9ccf17cd0a37351565575e121d99280167964b29",
+        "puntos": 1,
+        "mano": [
+          {
+            "id": 32,
+            "texto": "Una empanada de chiverre sospechosa."
+          },
+          {
+            "id": 117,
+            "texto": "Un plan económico explicado con frijoles y arroz."
+          },
+          {
+            "id": 83,
+            "texto": "Una piñata con la cara de un político ficticio."
+          },
+          {
+            "id": 42,
+            "texto": "Un candidato que solo responde con emojis."
+          },
+          {
+            "id": 49,
+            "texto": "Una campaña electoral patrocinada por una pulpería."
+          },
+          {
+            "id": 119,
+            "texto": "Un discurso presidencial que termina con 'saludos a mi mamá'."
+          },
+          {
+            "id": 51,
+            "texto": "Una entrevista que terminó en puro chisme."
+          }
+        ],
+        "mi_voto": null
+      },
+      {
+        "id": "51c73720ce1724be",
+        "nombre": "B",
+        "token": "0b41e01e334eb01c1fa679e6c4b4a89ff050a98dde37985543cb577b8ec7cf98",
+        "puntos": 0,
+        "mano": [
+          {
+            "id": 56,
+            "texto": "Una inteligencia artificial que se postula a presidente."
+          },
+          {
+            "id": 97,
+            "texto": "Un candidato que confunde la Asamblea con un estadio."
+          },
+          {
+            "id": 107,
+            "texto": "Un candidato que cree que el dólar todavía cuesta mil colones."
+          },
+          {
+            "id": 106,
+            "texto": "Un plan de seguridad basado en poner más cámaras falsas."
+          },
+          {
+            "id": 49,
+            "texto": "Una campaña electoral patrocinada por una pulpería."
+          },
+          {
+            "id": 116,
+            "texto": "Un candidato que promete bajar el precio de los chifrijos."
+          },
+          {
+            "id": 84,
+            "texto": "Un sombrero presidencial hecho de tortillas."
+          }
+        ],
+        "mi_voto": null
+      },
+      {
+        "id": "24266cdb933d019e",
+        "nombre": "C",
+        "token": "852c128b2ce8ca000d0b074faac767014c84e95d20f4f90a26a959e08b487c43",
+        "puntos": 0,
+        "mano": [
+          {
+            "id": 6,
+            "texto": "Un candidato que responde todo con 'diay'."
+          },
+          {
+            "id": 77,
+            "texto": "Un partido que cambia de nombre cada elección."
+          },
+          {
+            "id": 12,
+            "texto": "Una sesión legislativa que parece un reality show."
+          },
+          {
+            "id": 52,
+            "texto": "Un video de campaña grabado con un Nokia."
+          },
+          {
+            "id": 21,
+            "texto": "Un hueco en la calle declarado patrimonio nacional."
+          },
+          {
+            "id": 99,
+            "texto": "Una campaña que reparte gallos pintos en lugar de volantes."
+          },
+          {
+            "id": 3,
+            "texto": "Un candidato bailando en TikTok."
+          }
+        ],
+        "mi_voto": null
+      }
+    ],
+    "ronda": {
+      "numero": 2,
+      "soberano_id": "bf4d64565b8c4b92",
+      "carta_negra": {
+        "texto": "El nuevo plan para salvar la CCSS consiste en ____.",
+        "elegir": 1
+      },
+      "respuestas": [],
+      "votos_emitidos": 0,
+      "favoritas_del_pueblo": [],
+      "ganadora": null
+    },
+    "historial": [
+      {
+        "numero": 1,
+        "soberano_id": "35a0c638e1466d42",
+        "ganador_id": "bf4d64565b8c4b92",
+        "frase": "El nuevo eslogan de campaña es: ¡Más Una campaña financiada con rifas de tamales. y menos Una pulpería que acepta votos como método de pago.!",
+        "respeto_al_pueblo": false
+      }
+    ],
+    "ganador_id": null
+  }
+]
