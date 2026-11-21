@@ -331,7 +331,6 @@ async function manejarInterno(req, res) {
 }
 
 // Cola para evitar modificaciones simultáneas.
-// Adecuada para un solo proceso Node.js.
 let cola = Promise.resolve();
 
 function manejar(req, res) {

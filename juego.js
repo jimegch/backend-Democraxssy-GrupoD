@@ -57,9 +57,7 @@ function nuevaRonda(partida) {
     )
   ];
 
-  // Ronda 1: anfitrión.
-  // Ronda 2: jugador 2.
-  // Ronda 3: jugador 3, etc.
+  
   const posicion = (numero - 1) % ordenJugadores.length;
   const soberano = ordenJugadores[posicion];
 
@@ -325,7 +323,7 @@ function avanzarPartida(partida, jugador) {
   fallo(409, "No se puede avanzar en esta fase.");
 }
 
-// Prepara la información que recibe React.
+// Prepara la información que recibe el front.
 function vista(partida, jugador) {
   const r = partida.ronda;
 

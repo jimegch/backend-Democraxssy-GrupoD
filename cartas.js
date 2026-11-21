@@ -126,7 +126,6 @@ const textosBlancos = [
   "Un diputado que propone eliminar los lunes.",
   "Una reunión que pudo haber sido un correo.",
 
-  // Humor absurdo y político
   "Un presidente hablando con un perico.",
   "Un debate moderado por un tucán.",
   "Un candidato invisible.",

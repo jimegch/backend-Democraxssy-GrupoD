@@ -25,7 +25,6 @@ function inicializarBD() {
     );
   `);
 
-  console.log("Base de datos SQLite lista.");
 }
 
 // Recupera una partida mediante su ID.
