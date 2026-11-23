@@ -4,7 +4,7 @@ require("dotenv").config();
 const http = require("node:http");
 
 const { manejar } = require("./rutas");
-const { inicializarBD } = require("./partidas");
+const { inicializarBD } = require("./datos/partidas");
 
 const PORT = Number(process.env.PORT) || 3000;
 

@@ -9,7 +9,7 @@ COPY package.json package-lock.json ./
 RUN npm ci --omit=dev && npm cache clean --force
 
 # Luego el código del servidor.
-COPY *.js ./
+COPY src ./src
 
 # La base de datos vive en un volumen para que no se pierda
 # al reconstruir o reiniciar el contenedor.
@@ -22,4 +22,4 @@ VOLUME ["/data"]
 USER node
 EXPOSE 3000
 
-CMD ["node", "server.js"]
+CMD ["node", "src/server.js"]
