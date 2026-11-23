@@ -1,12 +1,11 @@
 
 const path = require("node:path");
 const { DatabaseSync } = require("node:sqlite");
-const { fallo } = require("./jugadores");
+const { fallo } = require("../juego/jugadores");
 
 // Ruta donde se guardará la base de datos.
 // Se puede cambiar con la variable de entorno DB_RUTA
-// (útil en el despliegue para guardarla en un volumen persistente).
-const rutaBD = process.env.DB_RUTA || path.join(__dirname, "democraxssy.db");
+const rutaBD = process.env.DB_RUTA || path.join(__dirname, "..", "..", "democraxssy.db");
 
 // Abre o crea la base de datos SQLite.
 const db = new DatabaseSync(rutaBD);

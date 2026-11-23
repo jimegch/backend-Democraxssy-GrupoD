@@ -3,7 +3,7 @@ const {
   guardarPartidas,
   agregarPartida,
   eliminarPartida
-} = require("./partidas");
+} = require("./datos/partidas");
 
 const {
   nuevoId,
@@ -12,7 +12,7 @@ const {
   crearJugador,
   identificarJugador,
   sinToken
-} = require("./jugadores");
+} = require("./juego/jugadores");
 
 const {
   comprobarFase,
@@ -22,7 +22,7 @@ const {
   elegirGanador,
   avanzarPartida,
   vista
-} = require("./juego");
+} = require("./juego/juego");
 
 // Tamaño máximo del cuerpo (4 KB).
 const LIMITE_CUERPO = 4096;
