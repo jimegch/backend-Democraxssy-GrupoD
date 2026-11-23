@@ -1,10 +1,79 @@
 
 const { cartasNegras, cartasBlancas } = require("./cartas");
+const crypto = require("node:crypto");
 const { fallo, nuevoId, puedeAvanzar } = require("./jugadores");
 
-// Selecciona un elemento aleatorio.
-function aleatorio(lista) {
-  return lista[Math.floor(Math.random() * lista.length)];
+// Mezcla una lista (Fisher-Yates) y la devuelve.
+function barajar(lista) {
+  for (let i = lista.length - 1; i > 0; i--) {
+    const j = crypto.randomInt(i + 1);
+    [lista[i], lista[j]] = [lista[j], lista[i]];
+  }
+
+  return lista;
+}
+
+// Saca la siguiente carta negra sin repetir hasta agotar el mazo.
+function sacarCartaNegra(partida) {
+  if (!Array.isArray(partida.mazo_negras) || partida.mazo_negras.length === 0) {
+    const anterior = partida.ronda?.carta_negra?.texto;
+
+    partida.mazo_negras = barajar(
+      cartasNegras.map((_, i) => i)
+    );
+
+    // Evita repetir la última carta al volver a barajar.
+    const primera = cartasNegras[partida.mazo_negras.at(-1)];
+    if (primera.texto === anterior && partida.mazo_negras.length > 1) {
+      partida.mazo_negras.unshift(partida.mazo_negras.pop());
+    }
+  }
+
+  return { ...cartasNegras[partida.mazo_negras.pop()] };
+}
+
+// Saca una carta blanca del mazo común de la partida.
+// Así dos jugadores no tienen la misma carta a la vez.
+function sacarCartaBlanca(partida, jugador) {
+  if (!Array.isArray(partida.mazo_blancas) || partida.mazo_blancas.length === 0) {
+    // Se vuelven a barajar las cartas que nadie tiene en la mano.
+    const enMano = new Set(
+      partida.jugadores.flatMap(j => j.mano.map(c => c.id))
+    );
+
+    partida.mazo_blancas = barajar(
+      cartasBlancas.map(c => c.id).filter(id => !enMano.has(id))
+    );
+  }
+
+  const id = partida.mazo_blancas.pop();
+
+  if (id !== undefined) {
+    return { ...cartasBlancas[id] };
+  }
+
+  // Con muchos jugadores (22 x 7 = 154) no alcanzan las 120 cartas:
+  // entonces se reparte una carta que este jugador no tenga.
+  const disponibles = cartasBlancas.filter(
+    carta => !jugador.mano.some(actual => actual.id === carta.id)
+  );
+
+  return disponibles.length
+    ? { ...disponibles[crypto.randomInt(disponibles.length)] }
+    : null;
+}
+
+// Adapta el texto de una carta blanca para ponerlo dentro de la frase:
+// primera letra en minúscula y sin el punto final.
+function textoEnFrase(texto) {
+  let resultado = texto.trim().replace(/\.$/, "");
+
+  // No cambia siglas como "CCSS" o "TSE".
+  if (!/^[A-ZÁÉÍÓÚÑ]{2}/.test(resultado)) {
+    resultado = resultado.charAt(0).toLowerCase() + resultado.slice(1);
+  }
+
+  return resultado;
 }
 
 // Comprueba que la partida esté en la fase correcta.
@@ -15,17 +84,13 @@ function comprobarFase(partida, fase) {
 }
 
 // Completa la mano de un jugador hasta tener 7 cartas.
-function rellenarMano(jugador) {
+function rellenarMano(partida, jugador) {
   while (jugador.mano.length < 7) {
-    const disponibles = cartasBlancas.filter(
-      carta => !jugador.mano.some(
-        actual => actual.id === carta.id
-      )
-    );
+    const carta = sacarCartaBlanca(partida, jugador);
 
-    if (disponibles.length === 0) break;
+    if (!carta) break;
 
-    jugador.mano.push(aleatorio(disponibles));
+    jugador.mano.push(carta);
   }
 }
 
@@ -63,13 +128,13 @@ function nuevaRonda(partida) {
 
   for (const jugador of partida.jugadores) {
     jugador.mi_voto = null;
-    rellenarMano(jugador);
+    rellenarMano(partida, jugador);
   }
 
   partida.ronda = {
     numero,
     soberano_id: soberano.id,
-    carta_negra: aleatorio(cartasNegras),
+    carta_negra: sacarCartaNegra(partida),
     respuestas: [],
     votos_emitidos: 0,
     favoritas_del_pueblo: [],
@@ -115,6 +180,9 @@ function abrirVotacion(partida) {
     );
   }
 
+  // Las respuestas se revelan barajadas para que sean anónimas.
+  barajar(partida.ronda.respuestas);
+
   // Avanza a la fase de votación.
   partida.fase = "votacion";
 }
@@ -159,7 +227,10 @@ function enviarRespuesta(partida, jugador, ids) {
 
   const frase = partida.ronda.carta_negra.texto.replace(
     /____/g,
-    () => seleccion[posicion++]?.texto || "____"
+    () => {
+      const carta = seleccion[posicion++];
+      return carta ? textoEnFrase(carta.texto) : "____";
+    }
   );
 
   partida.ronda.respuestas.push({
@@ -272,7 +343,9 @@ function elegirGanador(partida, jugador, respuestaId) {
     soberano_id: jugador.id,
     ganador_id: ganador.id,
     frase: respuesta.frase,
+    // Si nadie votó, se considera que respetó al pueblo.
     respeto_al_pueblo:
+      partida.ronda.favoritas_del_pueblo.length === 0 ||
       partida.ronda.favoritas_del_pueblo.includes(respuesta.id)
   });
 
@@ -296,20 +369,9 @@ function avanzarPartida(partida, jugador) {
     return;
   }
 
-  // Fase de votación.
+  // Fase de votación: el anfitrión o el soberano
+  // pueden cerrarla aunque falten votos.
   if (partida.fase === "votacion") {
-    // Solo el soberano puede cerrar
-    // anticipadamente la votación.
-    if (
-      jugador.id !== partida.ronda.soberano_id &&
-      !votosCompletos(partida)
-    ) {
-      fallo(
-        403,
-        "Solo el soberano puede cerrar una votación incompleta."
-      );
-    }
-
     cerrarVotacion(partida);
     return;
   }
@@ -378,16 +440,24 @@ function vista(partida, jugador) {
       votos_emitidos: r.votos_emitidos,
 
       respuestas: mostrarRespuestas
-        ? r.respuestas.map(x => ({
-            id: x.id,
-            cartas: x.cartas,
-            frase: x.frase,
-            es_mia: Boolean(
-              jugador && x.autor_id === jugador.id
-            ),
-            votos: mostrarVotos ? x.votos : null,
-            autor_id: mostrarAutores ? x.autor_id : null
-          }))
+        ? r.respuestas.map(x => {
+            const respuesta = {
+              id: x.id,
+              cartas: x.cartas,
+              frase: x.frase,
+              es_mia: Boolean(
+                jugador && x.autor_id === jugador.id
+              )
+            };
+
+            // Los votos aparecen desde la fase decision.
+            if (mostrarVotos) respuesta.votos = x.votos;
+
+            // El autor aparece desde la fase resultado.
+            if (mostrarAutores) respuesta.autor_id = x.autor_id;
+
+            return respuesta;
+          })
         : [],
 
       favoritas_del_pueblo: mostrarVotos

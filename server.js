@@ -16,6 +16,11 @@ function iniciarServidor() {
     // Crea el servidor HTTP.
     const servidor = http.createServer(manejar);
 
+    // Límites de tiempo para que un cliente lento no
+    // mantenga conexiones abiertas para siempre.
+    servidor.headersTimeout = 10000;
+    servidor.requestTimeout = 15000;
+
     // Inicia el servidor sin mostrar mensajes.
     servidor.listen(PORT, "0.0.0.0");
 

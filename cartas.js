@@ -32,7 +32,18 @@ const cartasNegras = [
   { texto: "El Tribunal Supremo de Elecciones recibió una denuncia relacionada con ____.", elegir: 1 },
   { texto: "El nuevo eslogan de campaña es: ¡Más ____ y menos ____!", elegir: 2 },
   { texto: "La solución del Gobierno para el desempleo juvenil es ____.", elegir: 1 },
-  { texto: "El debate presidencial terminó en un escándalo después de descubrir ____.", elegir: 1 }
+  { texto: "El debate presidencial terminó en un escándalo después de descubrir ____.", elegir: 1 },
+
+  { texto: "La nueva campaña de transparencia del Gobierno empieza con ____.", elegir: 1 },
+  { texto: "El informe de la Contraloría reveló que el dinero se usó en ____.", elegir: 1 },
+  { texto: "Para ganar votos en las provincias, el candidato regaló ____.", elegir: 1 },
+  { texto: "La sesión de la Asamblea se volvió viral por culpa de ____.", elegir: 1 },
+  { texto: "El ministro renunció después de que alguien filtró ____.", elegir: 1 },
+  { texto: "La nueva ley obliga a todos los ciudadanos a llevar ____.", elegir: 1 },
+  { texto: "El plan de gobierno tiene dos pilares: ____ y ____.", elegir: 2 },
+  { texto: "En el próximo debate, los candidatos discutirán sobre ____.", elegir: 1 },
+  { texto: "Los diputados aprobaron ____ a cambio de ____.", elegir: 2 },
+  { texto: "La encuesta más reciente dice que al pueblo le preocupa ____.", elegir: 1 }
 ];
 
 

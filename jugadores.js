@@ -15,15 +15,21 @@ function fallo(codigo, mensaje) {
 
 // Comprueba el nombre de un jugador.
 function validarNombre(nombre) {
-  if (
-    typeof nombre !== "string" ||
-    nombre.trim().length < 1 ||
-    nombre.trim().length > 24
-  ) {
+  const limpio = typeof nombre === "string" ? nombre.trim() : "";
+
+  // Se cuentan caracteres reales (un emoji cuenta como uno).
+  const largo = [...limpio].length;
+
+  if (largo < 1 || largo > 24) {
     fallo(400, "El nombre debe tener entre 1 y 24 caracteres.");
   }
 
-  return nombre.trim();
+  // No se admiten caracteres de control.
+  if (/[\u0000-\u001F\u007F-\u009F]/.test(limpio)) {
+    fallo(400, "El nombre no puede tener caracteres de control.");
+  }
+
+  return limpio;
 }
 
 // Crea los datos iniciales de un jugador.
@@ -42,20 +48,19 @@ function crearJugador(nombre) {
 function identificarJugador(partida, req, obligatorio = true) {
   const autorizacion = req.headers.authorization;
 
-  if (!autorizacion) {
+  if (autorizacion === undefined) {
     if (obligatorio) {
-      fallo(401, "Debes enviar un token de autenticación.");
+      fallo(401, "Token ausente o inválido para esta partida.");
     }
 
     return null;
   }
 
-  const coincidencia = /^Bearer ([a-f0-9]{64})$/i.exec(
-    autorizacion
-  );
+  // Bearer + 64 caracteres hexadecimales en minúsculas.
+  const coincidencia = /^Bearer ([0-9a-f]{64})$/.exec(autorizacion);
 
   if (!coincidencia) {
-    fallo(401, "El formato del token es incorrecto.");
+    fallo(409, "La cabecera Authorization debe ser Bearer seguido de 64 caracteres hexadecimales en minúsculas.");
   }
 
   const jugador = partida.jugadores.find(
@@ -63,7 +68,7 @@ function identificarJugador(partida, req, obligatorio = true) {
   );
 
   if (!jugador) {
-    fallo(401, "El token no pertenece a esta partida.");
+    fallo(401, "Token ausente o inválido para esta partida.");
   }
 
   return jugador;
@@ -71,7 +76,7 @@ function identificarJugador(partida, req, obligatorio = true) {
 
 // Impide enviar tokens en rutas públicas.
 function sinToken(req) {
-  if (req.headers.authorization) {
+  if (req.headers.authorization !== undefined) {
     fallo(409, "Esta operación no necesita un token.");
   }
 }

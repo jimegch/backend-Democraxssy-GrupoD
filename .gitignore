@@ -2,3 +2,10 @@
 node_modules/
 .env
 *.log
+.vs/
+
+# Base de datos local (contiene tokens de jugadores)
+democraxssy.db
+democraxssy.db-shm
+democraxssy.db-wal
+partidas.json
