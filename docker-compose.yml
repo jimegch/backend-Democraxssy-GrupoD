@@ -1,0 +1,36 @@
+# Levanta todo con:  docker compose up -d --build
+services:
+  # El backend de DemocrAXSSY (Node.js + SQLite).
+  backend:
+    build: .
+    restart: unless-stopped
+    environment:
+      PORT: "3000"
+      DB_RUTA: /data/democraxssy.db
+    volumes:
+      - datos:/data
+    # Acceso directo al backend por HTTP en el puerto 3000 (opcional).
+    ports:
+      - "3000:3000"
+
+  # Caddy: pone HTTP (80) y HTTPS (443) delante del backend.
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    depends_on:
+      - backend
+    environment:
+      DOMINIO: ${DOMINIO:?Falta DOMINIO en el archivo .env}
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_datos:/data
+      - caddy_config:/config
+
+volumes:
+  datos:
+  caddy_datos:
+  caddy_config:

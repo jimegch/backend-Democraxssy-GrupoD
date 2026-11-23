@@ -1,0 +1,10 @@
+node_modules
+.git
+.vs
+.env
+*.log
+democraxssy.db
+democraxssy.db-shm
+democraxssy.db-wal
+partidas.json
+pruebas

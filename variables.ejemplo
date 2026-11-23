@@ -1,0 +1,8 @@
+# Copia este archivo como .env y cambia el valor:
+#   cp variables.ejemplo .env
+
+# Nombre del backend para HTTPS (debe apuntar a la IP pública de la VM).
+# Opción 1, sin registro: la IP con guiones + .sslip.io
+#   IP 129.146.10.20  ->  129-146-10-20.sslip.io
+# Opción 2: un subdominio de DuckDNS, por ejemplo democraxssy-api.duckdns.org
+DOMINIO=129-146-10-20.sslip.io

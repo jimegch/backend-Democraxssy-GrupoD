@@ -1,0 +1,17 @@
+# Caddy recibe las conexiones de Internet y se las pasa al backend.
+# Atiende HTTP (puerto 80) y HTTPS (puerto 443).
+# El certificado HTTPS lo pide y renueva solo, gratis (Let's Encrypt).
+{
+	# No redirigir HTTP a HTTPS: el profesor pide que el backend acepte ambos.
+	auto_https disable_redirects
+}
+
+# HTTPS con el nombre de dominio del backend.
+{$DOMINIO} {
+	reverse_proxy backend:3000
+}
+
+# HTTP sin cifrar: por el dominio o por la IP pública directamente.
+:80 {
+	reverse_proxy backend:3000
+}
